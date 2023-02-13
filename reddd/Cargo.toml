@@ -1,5 +1,6 @@
 [package]
-name = "reddd_macros"
+name = "reddd"
+description = "Main crate"
 edition.workspace = true
 version.workspace = true
 authors.workspace = true
