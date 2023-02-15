@@ -1,7 +1,34 @@
+/// A trait to be implemented by concrete value types.
+///
+/// This trait can be useful to "embed" domain rules (such as validation)
+/// within the value type itself. It also can be used to strongly-type values
+/// that could mean different things.
+///
+/// # Example
+///
+/// ```rust
+/// #[derive(Clone, ValueType)]
+/// struct Balance(f64);
+///
+/// impl TryFrom<f64> for Balance {
+///     type Error = BalanceError;
+///
+///     fn try_from(value: f64) -> Result<Self, Self::Error> {
+///         if value < 0 || value > MAX_ALLOWED_BALANCE {
+///             return Err(BalanceError::BalanceOutOfBounds);
+///         }
+///
+///         Self(value)
+///     }
+/// }
+/// ```
 pub trait ValueType: Clone {
     type Value: Clone + PartialEq + PartialOrd;
 
+    /// Moves the wrapped value out of `self`
     fn value(self) -> Self::Value;
+
+    /// Borrows a reference to the wrapped value
     fn value_ref(&self) -> &Self::Value;
 }
 
