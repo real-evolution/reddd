@@ -1,19 +1,32 @@
 use darling::{FromDeriveInput, FromField, ToTokens};
+use quote::quote;
 
 #[derive(Clone, Debug, FromField)]
 #[darling(attributes(main_field))]
-pub(super) struct MainField {
+struct ValueTypeField {
     ident: Option<syn::Ident>,
     ty: syn::Type,
+    attrs: Vec<syn::Attribute>,
 }
 
 #[derive(Debug, FromDeriveInput)]
 #[darling(forward_attrs(allow, doc, cfg))]
-#[darling(supports(struct_any))]
+#[darling(attributes(main_field), supports(struct_any))]
 pub(super) struct ValueType {
     ident: syn::Ident,
     generics: syn::Generics,
-    data: darling::ast::Data<(), MainField>,
+    data: darling::ast::Data<(), ValueTypeField>,
+}
+
+impl ValueTypeField {
+    fn is_main_field(&self) -> bool {
+        self.attrs.iter().any(|a| {
+            a.path
+                .get_ident()
+                .map(|id| id == "main_field")
+                .unwrap_or(false)
+        })
+    }
 }
 
 impl ToTokens for ValueType {
@@ -26,31 +39,51 @@ impl ToTokens for ValueType {
 
         let (imp, ty, wher) = generics.split_for_impl();
 
-        let fields = data
+        let fields: Vec<_> = data
             .as_ref()
             .take_struct()
             .expect("only structs are supported")
-            .fields;
+            .fields
+            .into_iter()
+            .enumerate()
+            .map(|(i, f)| {
+                (
+                    f.is_main_field(),
+                    f.ident.as_ref().map(|id| quote!(#id)).unwrap_or_else(
+                        || {
+                            let i = syn::Index::from(i);
 
-        if fields.len() != 1 {
-            panic!("only one field should be annotated as the main field");
-        }
+                            quote!(#i)
+                        },
+                    ),
+                    &f.ty,
+                )
+            })
+            .collect();
 
-        let MainField {
-            ident: field_ident,
-            ty: field_ty,
-        } = fields.first().expect("at least one field is required");
+        let (field_id, field_ty) = if fields.is_empty() {
+            panic!("field-less structs are not supported");
+        } else if fields.iter().filter(|(m, _, _)| *m).count() > 1 {
+            panic!("only one field can be set as the main field");
+        } else {
+            let (_, field_id, field_ty) = fields
+                .iter()
+                .find(|(m, _, _)| *m)
+                .unwrap_or(fields.first().unwrap());
+
+            (field_id, field_ty)
+        };
 
         tokens.extend(quote::quote! {
             impl #imp ValueType for #ident #ty #wher {
                 type Value = #field_ty;
 
                 fn value(self) -> Self::Value {
-                    self.#field_ident
+                    self.#field_id
                 }
 
                 fn value_ref(&self) -> &Self::Value {
-                    &self.#field_ident
+                    &self.#field_id
                 }
             }
         });
