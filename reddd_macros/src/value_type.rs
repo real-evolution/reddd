@@ -2,7 +2,7 @@ use darling::{FromDeriveInput, FromField, ToTokens};
 use quote::quote;
 
 #[derive(Clone, Debug, FromField)]
-#[darling(attributes(main_field))]
+#[darling(forward_attrs(main_field))]
 struct ValueTypeField {
     ident: Option<syn::Ident>,
     ty: syn::Type,
