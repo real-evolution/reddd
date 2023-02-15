@@ -1,5 +1,5 @@
 pub trait ValueType: Clone {
-    type Value;
+    type Value: Clone + PartialEq + PartialOrd;
 
     fn value(self) -> Self::Value;
     fn value_ref(&self) -> &Self::Value;
