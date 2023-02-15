@@ -1,4 +1,4 @@
-pub trait ValueType {
+pub trait ValueType: Clone {
     type Value;
 
     fn value(self) -> Self::Value;
@@ -14,7 +14,7 @@ mod tests {
 
     #[test]
     fn simple_newtype_annotated_test() {
-        #[derive(ValueType, Dummy)]
+        #[derive(Clone, ValueType, Dummy)]
         struct NewType(#[main_field] i32);
 
         let f: NewType = Faker.fake();
@@ -26,7 +26,7 @@ mod tests {
 
     #[test]
     fn simple_newtype_auto_test() {
-        #[derive(ValueType, Dummy)]
+        #[derive(Clone, ValueType, Dummy)]
         struct NewType(i32);
 
         let f: NewType = Faker.fake();
@@ -38,7 +38,7 @@ mod tests {
 
     #[test]
     fn multifield_newtype_annotated_test() {
-        #[derive(ValueType, Dummy)]
+        #[derive(Clone, ValueType, Dummy)]
         struct NewType(i32, #[main_field] String);
 
         let f: NewType = Faker.fake();
@@ -50,7 +50,7 @@ mod tests {
 
     #[test]
     fn multifield_newtype_auto_test() {
-        #[derive(ValueType, Dummy)]
+        #[derive(Clone, ValueType, Dummy)]
         struct NewType(i32, String);
 
         let f: NewType = Faker.fake();
@@ -62,7 +62,7 @@ mod tests {
 
     #[test]
     fn multifield_named_annotated_test() {
-        #[derive(ValueType, Dummy)]
+        #[derive(Clone, ValueType, Dummy)]
         struct NewType {
             _field0: i32,
             #[main_field]
@@ -78,7 +78,7 @@ mod tests {
 
     #[test]
     fn multifield_named_auto_test() {
-        #[derive(ValueType, Dummy)]
+        #[derive(Clone, ValueType, Dummy)]
         struct NewType {
             field0: i32,
             _field1: String,
