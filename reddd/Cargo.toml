@@ -6,3 +6,4 @@ version.workspace = true
 authors.workspace = true
 
 [dependencies]
+reddd_macros = { path = "../reddd_macros" }
