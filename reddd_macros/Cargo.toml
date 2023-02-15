@@ -4,4 +4,12 @@ edition.workspace = true
 version.workspace = true
 authors.workspace = true
 
+[lib]
+proc-macro = true
+
 [dependencies]
+darling = "0"
+proc-macro2 = "1"
+proc-macro-error = "1"
+quote = "1"
+syn = { version = "1", features = ["full"] }
