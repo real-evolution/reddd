@@ -86,6 +86,18 @@ impl ToTokens for ValueType {
                     &self.#field_id
                 }
             }
+
+            impl #imp PartialEq for #ident #ty #wher {
+                fn eq(&self, other: &Self) -> bool {
+                    matches!(self.partial_cmp(other), Some(std::cmp::Ordering::Equal))
+                }
+            }
+
+            impl #imp PartialOrd for #ident #ty #wher {
+                fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+                    self.#field_id.partial_cmp(&other.#field_id)
+                }
+            }
         });
     }
 }
