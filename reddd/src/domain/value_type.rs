@@ -90,4 +90,57 @@ mod tests {
         assert_eq!(&fval, f.value_ref());
         assert_eq!(fval, f.value());
     }
+
+    #[test]
+    fn equlity_test() {
+        #[derive(Clone, Debug, ValueType, Dummy)]
+        struct NewType(String);
+
+        let f1: NewType = Faker.fake();
+        let mut f2 = f1.clone();
+
+        assert_eq!(f1, f2);
+
+        f2.0 = f1.0.clone() + "_additional"; // ensures not equal
+
+        assert_ne!(f1, f2);
+    }
+
+    #[test]
+    fn order_test() {
+        #[derive(Clone, Debug, ValueType, Dummy)]
+        struct NewType(u64);
+
+        let mut f1: NewType = Faker.fake();
+        let mut f2 = f1.clone();
+
+        assert_eq!(f1, f2);
+
+        assert!(f1 <= f2);
+        assert!(f1 >= f2);
+        assert!(f2 <= f1);
+        assert!(f2 >= f1);
+
+        while f1 == f2 {
+            f1.0 += rand::random::<u64>();
+        }
+
+        assert_ne!(f1, f2);
+
+        assert!(f1 > f2);
+        assert!(f1 >= f2);
+        assert!(f2 < f1);
+        assert!(f2 <= f1);
+
+        while f1 >= f2 {
+            f2.0 += rand::random::<u64>();
+        }
+
+        assert_ne!(f1, f2);
+
+        assert!(f1 < f2);
+        assert!(f1 <= f2);
+        assert!(f2 > f1);
+        assert!(f2 >= f1);
+    }
 }
