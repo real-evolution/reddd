@@ -6,6 +6,10 @@ version.workspace = true
 authors.workspace = true
 
 [dependencies]
+# external deps
+chrono = { version = "0", features = ["serde"] }
+
+# internal deps
 reddd_macros = { path = "../reddd_macros" }
 
 [dev-dependencies]
