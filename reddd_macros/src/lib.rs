@@ -1,7 +1,8 @@
 use darling::{FromDeriveInput, ToTokens};
 
-mod value_type;
+mod entity;
 mod util;
+mod value_type;
 
 #[proc_macro_error::proc_macro_error]
 #[proc_macro_derive(ValueType, attributes(main_field))]
