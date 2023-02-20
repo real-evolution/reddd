@@ -9,6 +9,7 @@ proc-macro = true
 
 [dependencies]
 darling = "0"
+paste = "1"
 proc-macro2 = "1"
 proc-macro-error = "1"
 quote = "1"
