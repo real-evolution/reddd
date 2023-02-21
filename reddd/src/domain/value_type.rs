@@ -11,18 +11,40 @@ use reddd_macros::ValueType;
 /// # Example
 ///
 /// ```rust
-/// #[derive(Clone, ValueType)]
+/// use reddd::domain::ValueType;
+///
+/// const MIN_ALLOWED_BALANCE: f64 = 0.00;
+/// const MAX_ALLOWED_BALANCE: f64 = 1_000_000.00;
+///
+/// enum BalanceError {
+///     BalanceOutOfBounds,
+///     // ...
+/// }
+///
+/// #[derive(Clone)]
 /// struct Balance(f64);
+///
+/// impl ValueType for Balance {
+///     type Value = f64;
+///
+///     fn value(self) -> Self::Value {
+///         self.0
+///     }
+///
+///     fn value_ref(&self) -> &Self::Value {
+///         &self.0
+///     }
+/// }
 ///
 /// impl TryFrom<f64> for Balance {
 ///     type Error = BalanceError;
 ///
 ///     fn try_from(value: f64) -> Result<Self, Self::Error> {
-///         if value < 0 || value > MAX_ALLOWED_BALANCE {
+///         if value < MIN_ALLOWED_BALANCE || value > MAX_ALLOWED_BALANCE {
 ///             return Err(BalanceError::BalanceOutOfBounds);
 ///         }
 ///
-///         Self(value)
+///         Ok(Self(value))
 ///     }
 /// }
 /// ```
@@ -49,6 +71,11 @@ pub trait ValueType: Clone {
 ///
 /// # Example
 /// ```rust
+/// use reddd::domain::{TypedValue, ValueType};
+///
+/// struct MyFirstType;
+/// struct MySecondType;
+///
 /// type MyTypedValue1 = TypedValue<usize, MyFirstType>;
 /// type MyTypedValue2 = TypedValue<usize, MySecondType>;
 ///
@@ -193,7 +220,7 @@ mod tests {
         assert!(f2 >= f1);
 
         while f1 == f2 {
-            f1.0 += rand::random::<u64>();
+            f1.0 += rand::random::<u64>() % (u64::MAX - f1.0);
         }
 
         assert_ne!(f1, f2);
@@ -204,7 +231,7 @@ mod tests {
         assert!(f2 <= f1);
 
         while f1 >= f2 {
-            f2.0 += rand::random::<u64>();
+            f2.0 += rand::random::<u64>() % (u64::MAX - f2.0);
         }
 
         assert_ne!(f1, f2);
