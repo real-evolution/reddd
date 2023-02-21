@@ -7,7 +7,9 @@ authors.workspace = true
 
 [dependencies]
 # external deps
+async-trait = "0"
 chrono = { version = "0", features = ["serde"] }
+thiserror = "1"
 uuid = { version = "1", features = ["v4", "fast-rng"] }
 
 # internal deps
