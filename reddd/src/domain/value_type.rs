@@ -94,6 +94,15 @@ pub struct TypedValue<V, T>(#[main_field] V, PhantomData<dyn Fn() -> T>)
 where
     V: Clone + std::fmt::Debug + PartialEq + PartialOrd;
 
+impl<V, T> TypedValue<V, T>
+where
+    V: Clone + std::fmt::Debug + PartialEq + PartialOrd,
+{
+    pub fn new(value: V) -> Self {
+        Self(value, Default::default())
+    }
+}
+
 impl<V, T> Clone for TypedValue<V, T>
 where
     V: Clone + std::fmt::Debug + PartialEq + PartialOrd,
