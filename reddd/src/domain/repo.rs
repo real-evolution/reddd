@@ -29,6 +29,22 @@ pub trait Repo {
     ) -> error::RepoResult<bool>;
 }
 
+#[async_trait::async_trait]
+pub trait MutableRepo {
+    type Entity: MutableEntity;
+
+    async fn add(&self, item: Self::Entity) -> error::RepoResult<Self::Entity>;
+
+    async fn update(
+        &self,
+        item: Self::Entity,
+    ) -> error::RepoResult<Self::Entity>;
+
+    async fn remove(
+        &self,
+        key: &<Self::Entity as Entity>::Key,
+    ) -> error::RepoResult<()>;
+}
 
 pub mod error {
     use std::error::Error;
