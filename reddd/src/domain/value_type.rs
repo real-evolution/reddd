@@ -64,10 +64,10 @@ pub trait ValueType: Clone {
 /// that requires a [`ValueType<Value = V>`]. However, they **are not** when
 /// used with functions that requires either concretely.
 ///
-/// # Generic Parameters
+/// # Generic Arguments
 ///
-/// * `V`: Type of wrapped values
-/// * `T`: Type to distinguish wrappers with same `V` with
+/// * `V` - Type of wrapped values
+/// * `T` - Type to distinguish wrappers with same `V` with
 ///
 /// # Example
 /// ```rust
