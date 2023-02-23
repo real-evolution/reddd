@@ -1,19 +1,23 @@
 [package]
 name = "reddd"
-description = "Main crate"
+version = "0.1.0"
+description = "Domain-Driven Design (DDD) toolkit."
+keywords = ["ddd", "entity", "value-type"]
 edition.workspace = true
-version.workspace = true
 authors.workspace = true
+readme.workspace = true
+publish.workspace = true
+repository.workspace = true
+license-file.workspace = true
 
 [dependencies]
-# external deps
 async-trait = "0"
 chrono = { version = "0", features = ["serde"] }
 thiserror = "1"
 uuid = { version = "1", features = ["v4", "fast-rng"] }
 
-# internal deps
-reddd_macros = { path = "../reddd_macros" }
+# internal
+reddd-macros = { path = "../reddd-macros", version = "0.1" }
 
 [dev-dependencies]
 fake = { version = "2", features = ["chrono", "derive", "uuid"] }

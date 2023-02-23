@@ -1,0 +1,21 @@
+[package]
+name = "reddd-macros"
+version = "0.1.0"
+description = "`reddd` macros. Not intended to be used directly"
+keywords = ["ddd", "entity", "value-type", "macro", "proc-macro"]
+edition.workspace = true
+publish.workspace = true
+authors.workspace = true
+repository.workspace = true
+license-file.workspace = true
+
+[lib]
+proc-macro = true
+
+[dependencies]
+darling = "0"
+paste = "1"
+proc-macro2 = "1"
+proc-macro-error = "1"
+quote = "1"
+syn = { version = "1", features = ["full"] }
