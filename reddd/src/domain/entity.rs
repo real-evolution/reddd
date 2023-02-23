@@ -2,6 +2,14 @@ use chrono::{DateTime, Utc};
 
 use super::TypedValue;
 
+/// A typed value to represent an entity identifying key. This type is used
+/// to make identifiers strongly-typed, which makes making bugs when passing
+/// them to functions much more difficult.
+///
+/// # Generic Arguments
+///
+/// * `E` - The type of the entity that the key should be tied to.
+/// * `V` - The type of the key value.
 pub type Key<E, V> = TypedValue<V, E>;
 
 /// A trait to be implemented by domain entities.
