@@ -2,6 +2,18 @@
 members = ["reddd", "reddd_macros"]
 
 [workspace.package]
+# versioning
 edition = "2021"
 version = "0.1.0"
+
+# publishing
+publish = true
+repository = "https://github.com/rust-lang/cargo/"
+
+# metadata
+description = "Domain-Driven Design Toolkit"
+keywords = ["ddd", "entity", "domain"]
+
+# license
 authors = ["Ayman Al-Qadhi <alqd@protonmail.com>"]
+license-file = "LICENSE"
