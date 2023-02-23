@@ -25,13 +25,13 @@ use reddd_macros::ValueType;
 /// struct Balance(f64);
 ///
 /// impl ValueType for Balance {
-///     type Value = f64;
+///     type Inner = f64;
 ///
-///     fn value(self) -> Self::Value {
+///     fn into_inner(self) -> Self::Inner {
 ///         self.0
 ///     }
 ///
-///     fn value_ref(&self) -> &Self::Value {
+///     fn as_inner(&self) -> &Self::Inner {
 ///         &self.0
 ///     }
 /// }
@@ -49,13 +49,13 @@ use reddd_macros::ValueType;
 /// }
 /// ```
 pub trait ValueType: Clone {
-    type Value: Clone + PartialEq + PartialOrd;
+    type Inner: Clone + PartialEq + PartialOrd;
 
     /// Moves the wrapped value out of `self`
-    fn value(self) -> Self::Value;
+    fn into_inner(self) -> Self::Inner;
 
     /// Borrows a reference to the wrapped value
-    fn value_ref(&self) -> &Self::Value;
+    fn as_inner(&self) -> &Self::Inner;
 }
 
 /// A value of type `V` wrapper that is typed to a specific type `T`
@@ -80,7 +80,7 @@ pub trait ValueType: Clone {
 /// type MyTypedValue2 = TypedValue<usize, MySecondType>;
 ///
 /// // `MyTypedValue1` and `MyTypedValue2` can be used here
-/// fn generic_func<V: ValueType<Value = usize>>(value: V) {
+/// fn generic_func<V: ValueType<Inner = usize>>(value: V) {
 ///     // --snip--
 /// }
 ///
@@ -127,8 +127,8 @@ mod tests {
         let f: NewType = Faker.fake();
         let fval = f.0;
 
-        assert_eq!(&fval, f.value_ref());
-        assert_eq!(fval, f.value());
+        assert_eq!(&fval, f.as_inner());
+        assert_eq!(fval, f.into_inner());
     }
 
     #[test]
@@ -139,8 +139,8 @@ mod tests {
         let f: NewType = Faker.fake();
         let fval = f.0;
 
-        assert_eq!(&fval, f.value_ref());
-        assert_eq!(fval, f.value());
+        assert_eq!(&fval, f.as_inner());
+        assert_eq!(fval, f.into_inner());
     }
 
     #[test]
@@ -151,8 +151,8 @@ mod tests {
         let f: NewType = Faker.fake();
         let fval = f.1.clone();
 
-        assert_eq!(&fval, f.value_ref());
-        assert_eq!(fval, f.value());
+        assert_eq!(&fval, f.as_inner());
+        assert_eq!(fval, f.into_inner());
     }
 
     #[test]
@@ -163,8 +163,8 @@ mod tests {
         let f: NewType = Faker.fake();
         let fval = f.0;
 
-        assert_eq!(&fval, f.value_ref());
-        assert_eq!(fval, f.value());
+        assert_eq!(&fval, f.as_inner());
+        assert_eq!(fval, f.into_inner());
     }
 
     #[test]
@@ -179,8 +179,8 @@ mod tests {
         let f: NewType = Faker.fake();
         let fval = f.field1.clone();
 
-        assert_eq!(&fval, f.value_ref());
-        assert_eq!(fval, f.value());
+        assert_eq!(&fval, f.as_inner());
+        assert_eq!(fval, f.into_inner());
     }
 
     #[test]
@@ -194,8 +194,8 @@ mod tests {
         let f: NewType = Faker.fake();
         let fval = f.field0;
 
-        assert_eq!(&fval, f.value_ref());
-        assert_eq!(fval, f.value());
+        assert_eq!(&fval, f.as_inner());
+        assert_eq!(fval, f.into_inner());
     }
 
     #[test]

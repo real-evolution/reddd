@@ -76,13 +76,13 @@ impl ToTokens for ValueType {
 
         tokens.extend(quote::quote! {
             impl #imp ValueType for #ident #ty #wher {
-                type Value = #field_ty;
+                type Inner = #field_ty;
 
-                fn value(self) -> Self::Value {
+                fn into_inner(self) -> Self::Inner {
                     self.#field_id
                 }
 
-                fn value_ref(&self) -> &Self::Value {
+                fn as_inner(&self) -> &Self::Inner {
                     &self.#field_id
                 }
             }
