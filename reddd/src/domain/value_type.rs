@@ -94,7 +94,7 @@ cfg_if::cfg_if! {
         /// ````
         #[derive(Debug, ValueType, serde::Serialize, serde::Deserialize)]
         #[serde(transparent)]
-        pub struct TypedValue<V, T>(#[main_field] V, PhantomData<dyn Fn() -> T>)
+        pub struct TypedValue<V, T>(#[main_field] V, PhantomData<Box<T>>)
         where
             V: Clone + std::fmt::Debug + PartialEq + PartialOrd;
     } else {
