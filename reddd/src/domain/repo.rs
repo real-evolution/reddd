@@ -42,7 +42,7 @@ pub struct Pagination<'a, E: Entity> {
 #[async_trait::async_trait]
 pub trait Repo {
     /// The type of the entity that this repository operates on.
-    type Entity: Entity;
+    type Entity: Entity + Send + Sync;
 
     /// Gets a single item by its identifier.
     ///
@@ -82,7 +82,7 @@ pub trait Repo {
 #[async_trait::async_trait]
 pub trait MutableRepo {
     /// The type of the entity that this repository operates on.
-    type Entity: MutableEntity;
+    type Entity: MutableEntity + Send + Sync;
 
     /// Adds an item to the data repository.
     ///
