@@ -21,7 +21,7 @@ pub(super) struct ValueType {
 impl ValueTypeField {
     fn is_main_field(&self) -> bool {
         self.attrs.iter().any(|a| {
-            a.path
+            a.path()
                 .get_ident()
                 .map(|id| id == "main_field")
                 .unwrap_or(false)
