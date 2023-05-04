@@ -12,6 +12,8 @@ pub(super) struct UseCase {
     input: Option<syn::Type>,
     #[darling(default)]
     output: Option<syn::Type>,
+    #[darling(default)]
+    error: Option<syn::Type>,
 }
 
 impl ToTokens for UseCase {
@@ -21,6 +23,7 @@ impl ToTokens for UseCase {
             ref generics,
             ref input,
             ref output,
+            ref error,
         } = *self;
 
         let (imp, ty, wher) = generics.split_for_impl();
@@ -33,10 +36,15 @@ impl ToTokens for UseCase {
             .clone()
             .unwrap_or(syn::Type::parse.parse_str("()").unwrap());
 
+        let error = error
+            .clone()
+            .unwrap_or(syn::Type::parse.parse_str("()").unwrap());
+
         tokens.extend(quote::quote! {
             impl #imp UseCase for #ident #ty #wher {
                 type Input = #input;
                 type Output = #output;
+                type Error = #error;
             }
         });
     }

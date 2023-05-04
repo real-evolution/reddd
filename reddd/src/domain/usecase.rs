@@ -5,6 +5,9 @@ pub trait UseCase {
 
     /// The output of the use case.
     type Output: Sync;
+
+    /// The type of the error that can occur during the use case execution.
+    type Error: Sync + Send;
 }
 
 /// A trait to be implemented by use case handlers.
@@ -15,9 +18,6 @@ pub trait UseCase {
 /// * `S` - The type of the state of the application.
 #[async_trait::async_trait]
 pub trait UseCaseHandler<U: UseCase, S> {
-    /// The type of the error that can occur during the use case execution.
-    type Error: Send + Sync;
-
     /// Asynchronously executes the use case.
     ///
     /// # Parameters
@@ -26,10 +26,8 @@ pub trait UseCaseHandler<U: UseCase, S> {
     ///
     /// # Returns
     /// The output of the use case.
-    async fn execute(
-        input: U::Input,
-        state: &S,
-    ) -> Result<U::Output, Self::Error>;
+    async fn execute(input: U::Input, state: &S)
+        -> Result<U::Output, U::Error>;
 }
 
 #[cfg(test)]
@@ -38,6 +36,6 @@ mod tests {
     use reddd_macros::UseCase;
 
     #[derive(UseCase)]
-    #[usecase(input = "String", output = "i32")]
+    #[usecase(input = "String", output = "i32", error = "()")]
     struct SampleUseCase;
 }
