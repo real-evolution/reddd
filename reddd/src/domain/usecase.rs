@@ -1,10 +1,10 @@
 /// A trait to be implemented by use cases.
 pub trait UseCase {
     /// The input to the use case.
-    type Input;
+    type Input: Sync;
 
     /// The output of the use case.
-    type Output;
+    type Output: Sync;
 }
 
 /// A trait to be implemented by use case handlers.
