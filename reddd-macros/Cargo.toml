@@ -1,6 +1,6 @@
 [package]
 name = "reddd-macros"
-version = "0.1.0"
+version = "0.2.0"
 description = "`reddd` macros. Not intended to be used directly"
 keywords = ["ddd", "entity", "value-type", "macro", "proc-macro"]
 edition.workspace = true

@@ -23,7 +23,7 @@ serde = { version = "1", features = ["derive"], optional = true }
 thiserror = "1"
 
 # internal
-reddd-macros = { path = "../reddd-macros", version = "0.1" }
+reddd-macros = { path = "../reddd-macros", version = "0.2" }
 
 [dev-dependencies]
 fake = { version = "2", features = ["chrono", "derive", "uuid"] }
