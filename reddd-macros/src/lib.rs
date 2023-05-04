@@ -2,6 +2,7 @@ use darling::{FromDeriveInput, ToTokens};
 use proc_macro::TokenStream;
 
 mod entity;
+mod usecase;
 mod util;
 mod value_type;
 
@@ -48,8 +49,9 @@ macro_rules! concat_token_streams {
     }}
 }
 
-define_proc_macro!(ValueType #[ main_field ]);
-define_proc_macro!(Entity #[ id_field, created_at_field ]);
+define_proc_macro!(ValueType[main_field]);
+define_proc_macro!(Entity [id_field, created_at_field]);
+define_proc_macro!(UseCase with usecase::UseCase []);
 
 #[proc_macro_derive(
     MutableEntity,
