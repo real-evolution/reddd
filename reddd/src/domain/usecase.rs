@@ -31,3 +31,13 @@ pub trait UseCaseHandler<U: UseCase, S> {
         state: &S,
     ) -> Result<U::Output, Self::Error>;
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::domain::UseCase;
+    use reddd_macros::UseCase;
+
+    #[derive(UseCase)]
+    #[usecase(input = "String", output = "i32")]
+    struct SampleUseCase;
+}
