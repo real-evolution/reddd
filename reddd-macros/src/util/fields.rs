@@ -13,7 +13,7 @@ macro_rules! impl_field_ext {
 
             fn has_attribute(&self, attr: &str) -> bool {
                 self.attrs.iter().any(|a| {
-                    a.path.get_ident().map(|id| id == attr).unwrap_or(false)
+                    a.path().get_ident().map(|id| id == attr).unwrap_or(false)
                 })
             }
         }
