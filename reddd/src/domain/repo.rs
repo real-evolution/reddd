@@ -40,7 +40,7 @@ pub struct Pagination<'a, E: Entity> {
 /// This trait provides read-only methods that have no side effects on the
 /// stored data.
 #[async_trait::async_trait]
-pub trait Repo {
+pub trait ReadRepo: Sync {
     /// The type of the entity that this repository operates on.
     type Entity: Entity + Send + Sync;
 
@@ -80,7 +80,7 @@ pub trait Repo {
 /// Unlike [`Repo`] trait, implementations of this trait can have side effects
 /// on the stored data, thus extra care needs to be taken when used.
 #[async_trait::async_trait]
-pub trait MutableRepo {
+pub trait WriteRepo: Sync {
     /// The type of the entity that this repository operates on.
     type Entity: MutableEntity + Send + Sync;
 
@@ -114,6 +114,9 @@ pub trait MutableRepo {
         key: &<Self::Entity as Entity>::Key,
     ) -> error::RepoResult<()>;
 }
+
+/// A trait to be implemented by data repositories.
+pub trait Repo: ReadRepo + WriteRepo {}
 
 pub mod error {
     use std::error::Error;
