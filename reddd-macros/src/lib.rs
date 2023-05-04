@@ -21,13 +21,19 @@ macro_rules! parse_derive_input {
 }
 
 macro_rules! define_proc_macro {
-    ($trait:ident #[ $($attr:ident),* ]) => {
+    ($trait:ident with $impl:ty [ $($attr:ident),* ]) => {
         paste::paste! {
             #[proc_macro_error::proc_macro_error]
             #[proc_macro_derive($trait, attributes($($attr),*))]
             pub fn [<derive_ $trait:snake>](input: TokenStream) -> TokenStream {
-                parse_derive_input!(input => [<$trait:snake>]::$trait).into()
+                parse_derive_input!(input => $impl).into()
             }
+        }
+    };
+
+    ($trait:ident [ $($attr:ident),* ]) => {
+        paste::paste! {
+            define_proc_macro!($trait with [<$trait:snake>]::$trait [ $($attr),* ]);
         }
     };
 }
