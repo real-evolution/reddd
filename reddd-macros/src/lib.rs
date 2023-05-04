@@ -51,7 +51,7 @@ macro_rules! concat_token_streams {
 
 define_proc_macro!(ValueType[main_field]);
 define_proc_macro!(Entity [id_field, created_at_field]);
-define_proc_macro!(UseCase with usecase::UseCase []);
+define_proc_macro!(UseCase with usecase::UseCase [usecase]);
 
 #[proc_macro_derive(
     MutableEntity,

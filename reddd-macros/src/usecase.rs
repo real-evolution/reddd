@@ -3,8 +3,8 @@ use quote::ToTokens;
 use syn::parse::{Parse, Parser};
 
 #[derive(Debug, FromDeriveInput)]
-#[darling(forward_attrs(allow, doc, cfg))]
-#[darling(attributes(id_field, created_at_field), supports(struct_named))]
+#[darling(attributes(usecase), forward_attrs(allow, doc, cfg))]
+#[darling(supports(any))]
 pub(super) struct UseCase {
     ident: syn::Ident,
     generics: syn::Generics,
@@ -34,7 +34,7 @@ impl ToTokens for UseCase {
             .unwrap_or(syn::Type::parse.parse_str("()").unwrap());
 
         tokens.extend(quote::quote! {
-            impl #imp reddd::domain::UseCase for #ident #ty #wher {
+            impl #imp UseCase for #ident #ty #wher {
                 type Input = #input;
                 type Output = #output;
             }
