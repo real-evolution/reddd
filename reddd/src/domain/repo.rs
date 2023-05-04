@@ -151,6 +151,6 @@ pub mod error {
         /// Other error types. This can hold user-defined types, as well as,
         /// any other error type.
         #[error(transparent)]
-        Other(Box<dyn Error>),
+        Other(Box<dyn Error + Send + Sync>),
     }
 }
