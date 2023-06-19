@@ -26,8 +26,9 @@ pub trait UseCaseHandler<U: UseCase, S> {
     ///
     /// # Returns
     /// The output of the use case.
-    async fn execute(input: U::Input, state: &S)
-        -> Result<U::Output, U::Error>;
+    async fn execute(input: U::Input, state: &S) -> Result<U::Output, U::Error>
+    where
+        U::Input: 'async_trait;
 }
 
 #[cfg(test)]
