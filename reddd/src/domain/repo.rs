@@ -17,19 +17,19 @@ use super::{Entity, MutableEntity};
 /// }).await?;
 /// ```
 #[derive(Clone, Copy, Debug)]
-pub struct Pagination<'a, E: Entity> {
+pub struct Pagination<E: Entity> {
     /// The key which to get items before.
     ///
     /// This field is needed to eliminate possible duplications that can
     /// occure when paginating using timestamp only, as multiple records
     /// can have the same timestamp.
-    pub before_key: &'a E::Key,
+    pub before_key: E::Key,
 
     /// The creation timestamp which to get items before.
     ///
     /// This is usually obtained using [created_at](Entity::created_at())
     /// method of an entity.
-    pub before_timestamp: &'a DateTime<Utc>,
+    pub before_timestamp: DateTime<Utc>,
 
     /// The number of items to include in a page.
     pub page_size: usize,
@@ -59,9 +59,9 @@ pub trait ReadRepo: Sync {
     /// # Arguments
     ///
     /// * `params` - Pagination parameters to get the page with.
-    async fn get_page<'a>(
+    async fn get_page(
         &self,
-        params: Pagination<'a, Self::Entity>,
+        params: Pagination<Self::Entity>,
     ) -> error::RepoResult<Vec<Self::Entity>>;
 
     /// Checks whether an item with the passed identifier exists or not.
