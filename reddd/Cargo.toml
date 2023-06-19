@@ -1,6 +1,6 @@
 [package]
 name = "reddd"
-version = "0.2.0"
+version = "0.2.2"
 description = "Domain-Driven Design (DDD) toolkit."
 keywords = ["ddd", "entity", "value-type"]
 edition.workspace = true
